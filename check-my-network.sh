@@ -9,9 +9,9 @@ if [[ $OSTYPE =~ ^linux ]]; then
     echo "Do you want to update stuff? (y/n)"
     read update
     if [[ $update == 'y' ]]; then
+        sudo apt-get update
         sudo apt update
         sudo apt upgrade
-        sudo apt-get update
         sudo apt autoremove
         sudo apt install net-tools
         sudo apt-get install nmap -y
@@ -22,8 +22,8 @@ if [[ $OSTYPE =~ ^linux ]]; then
     fi
 else
 # [[ $OSTYPE =~ ^msys ]]; then
-    echo "Hello WINDOWS or MAC"
-    echo "This doesn't work here :("
+    echo "Hello, you are on WINDOWS or MAC"
+    echo "This script doesn't work here :("
     exit
 fi
 
@@ -32,6 +32,13 @@ echo "NETWORK:"
 ipadress=$(ifconfig | grep broadcast | awk '{print $2}')
 echo "Machine IP: $ipadress"
 read A B C D <<<"${ipadress//./ }"
+echo ""
+online=$(ping -q -c 1 8.8.8.8 | grep transmitted | awk '{print $1}')
+if [[ $online == 1 ]]
+	then echo "We are online!"
+else
+	echo "No internet connection."
+fi
 echo ""
 echo "running arp -a ..."
 arp -a
