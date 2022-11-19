@@ -34,7 +34,7 @@ echo "Machine IP: $ipadress"
 read A B C D <<<"${ipadress//./ }"
 echo ""
 # quick check if machine is online. command below recieves 0 or 1 where 1 = online.
-online=$(ping -q -c 1 8.8.8.8 | grep transmitted | awk '{print $1}')
+online=$(ping -q -c 1 -w 2 8.8.8.8 | grep transmitted | awk '{print $4}')
 if [[ $online == 1 ]]
 	then echo "We are online!"
 else
