@@ -41,13 +41,16 @@ else
 	echo "No internet connection."
 fi
 echo ""
-echo "running arp -a ..."
-arp -a
-echo ""
-echo "running nmap -sP $A.$B.$C.0/24..."
-nmap -sP $A.$B.$C.0/24
-echo ""
-echo "running ifconfig..."
+echo "ifconfig:"
 ifconfig
+
+echo ""
+echo "CLIENTS:"
+clients=$(arp -a | grep ether | gawk '{print $1 $2}')
+echo "$clients"
+
+echo ""
+echo "Nmap for $A.$B.$C.0/24:"
+nmap -sP $A.$B.$C.0/24
 
 exit
