@@ -44,7 +44,7 @@ fi
 # ifconfig
 
 echo ""
-echo "CLIENTS:"
+echo "OTHER CLIENTS:"
 echo "__________"
 clients=$(arp -a | grep ether| awk '{print $1 $2}')
 echo "$clients"
