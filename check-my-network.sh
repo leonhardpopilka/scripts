@@ -3,11 +3,10 @@
 # This script looks at my local network and tells me things about it.
 
 if [[ $OSTYPE =~ ^linux ]]; then
-    echo "Hello from linux."
-    echo "INSTALLING STUFF..."
-    echo "Do you want to update stuff? (y/n)"
-    read update
-    if [[ $update == 'y' ]]; then
+    # echo "Do you want to update stuff first? (y/n)"
+    # read update
+    if [[ $1 == '-u' ]]; then
+        echo "INSTALLING STUFF..."
         sudo apt-get update
         sudo apt update
         sudo apt upgrade
@@ -30,7 +29,7 @@ fi
 echo "NETWORK:"
 # get maschine ip adress and dissect it in triplets.
 ipadress=$(ifconfig | grep broadcast | awk '{print $2}')
-echo "Machine IP: $ipadress"
+echo "IP: $ipadress"
 read A B C D <<<"${ipadress//./ }"
 echo ""
 # quick check if machine is online. command below recieves 0 or 1 where 1 = online.
@@ -40,17 +39,19 @@ if [[ $online == 1 ]]
 else
 	echo "No internet connection."
 fi
-echo ""
-echo "ifconfig:"
-ifconfig
+# echo ""
+# echo "ifconfig:"
+# ifconfig
 
 echo ""
 echo "CLIENTS:"
-clients=$(arp -a | grep ether | gawk '{print $1 $2}')
+echo "__________"
+clients=$(arp -a | grep ether| awk '{print $1 $2}')
 echo "$clients"
 
 echo ""
 echo "Nmap for $A.$B.$C.0/24:"
-nmap -sP $A.$B.$C.0/24
-
+echo "__________"
+bc=$(nmap -sP 192.168.178.0/24| grep report| awk '{print $5 $6}')
+echo "$bc"
 exit
