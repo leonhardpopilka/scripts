@@ -28,7 +28,7 @@ fi
 # check my ip adresses
 echo "NETWORK:"
 # get maschine ip adress and dissect it in triplets.
-ipadress=$(ifconfig | grep broadcast | awk '{print $2}')
+ipadress=$(ifconfig | grep 'inet 192' | awk '{print $2}')
 echo "IP: $ipadress"
 read A B C D <<<"${ipadress//./ }"
 echo ""
@@ -46,7 +46,7 @@ fi
 echo ""
 echo "OTHER CLIENTS:"
 echo "__________"
-clients=$(arp -a | grep ether| awk '{print $1 $2}')
+clients=$(arp -a | grep ether| awk '{printf  $1" - "$2" - "$4 "\n"}')
 echo "$clients"
 
 echo ""
@@ -54,4 +54,5 @@ echo "Nmap for $A.$B.$C.0/24:"
 echo "__________"
 bc=$(nmap -sP 192.168.178.0/24| grep report| awk '{print $5 $6}')
 echo "$bc"
+
 exit
